@@ -1,0 +1,59 @@
+{%extends "base.html"%}
+
+{%block content%}
+    <style>
+        .task {
+            background-color: rgb(0, 255, 0);
+            border: 3px solid black;
+        }
+        .h3 {
+            pass
+        }
+    </style>
+    <h2> {% block title%} Viewing Current List{%endblock%}</h2>
+    {%for task in tasks%}
+        <div class="task">
+            <h3>{{task.task_name}}</h3>
+            <p>You have total of {{task.task_duration}}{{task.time_unit}}</p>
+            <p id="countdown-{{ task.id }}"></p>
+            <form action="{{ url_for('del_task', id=task.id) }}" method="post" style="display: inline;">
+                <button type="submit">Delete this plan</button>
+            </form>
+        </div>
+    {% endfor %}
+    <br><br>
+    <button type="button" onclick="window.location.href='{{ url_for('add_tasks') }}'">Add a new plan</button>
+
+<script>
+// Function to update the countdown for each task
+function updateCountdown() {
+    {% for task in tasks %}
+    var countdownElement = document.getElementById('countdown-{{ task.id }}');
+    var endTime = new Date('{{ task.creation_time }}');
+    // Adjust endTime based on task duration; assuming duration is in hours here
+    //if document.getElementById('{{task.time_unit}}') === 
+    endTime.setHours(endTime.getHours() + {{ task.task_duration }});
+
+    var now = new Date();
+    var timeDiff = endTime - now;
+    
+    // Calculate days, hours, minutes, and seconds left
+    var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+    
+    // Update the countdown element
+    countdownElement.innerHTML = days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
+
+    // If the countdown is over, display a message
+    if (timeDiff < 0) {
+        countdownElement.innerHTML = "EXPIRED";
+    }
+    {% endfor %}
+}
+setInterval(updateCountdown, 1000);
+</sript>
+{%endblock%}
+

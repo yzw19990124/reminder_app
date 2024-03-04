@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'reminderapp'
@@ -16,7 +16,9 @@ class User(db.Model):
     task_name = db.Column(db.String)
     task_duration = db.Column(db.Float, nullable=False)
     time_unit = db.Column(db.String)
-    creation_time = db.Column(db.DateTime, default=datetime.now())
+    creation_time = db.Column(db.DateTime)
+    end_time = db.Column(db.DateTime)
+    time_left = db.Column(db.DateTime)
 
 with app.app_context():
     db.create_all()
@@ -24,7 +26,19 @@ with app.app_context():
 @app.route("/")
 def index():
     tasks = User.query.all()
+    update_time_left(tasks)
     return render_template('plans.html', tasks=tasks)
+
+
+def update_time_left(tasks):
+    """
+    Refresh the count down
+    """
+    for task in tasks:
+        cur_time = datetime.now()
+        delta = task.end_time - cur_time
+        task.time_left = delta.total_seconds() if task.end_time > cur_time else 0
+
 
 @app.route("/add-tasks", methods=['GET', 'POST'])
 def add_tasks():
@@ -39,7 +53,9 @@ def add_tasks():
         if not task_duration:
             flash('Task duration is required.', 'error')
             return redirect(url_for('add_tasks'))
-        new_task = User(task_name=task_name, task_duration=task_duration, time_unit=time_unit)
+        creation_time = datetime.now()
+        end_time = get_end_time(time_unit, task_duration, creation_time)
+        new_task = User(task_name=task_name, task_duration=task_duration, time_unit=time_unit, creation_time=creation_time, end_time=end_time)
         db.session.add(new_task)
         db.session.commit()
         flash('Task added successfully!', 'success')
@@ -47,6 +63,14 @@ def add_tasks():
 
     return render_template('task.html')
 
+def get_end_time(unit, period, starttime):
+    if unit == "Days":
+        new_day = timedelta(days=period)
+        ret_time = starttime + new_day
+    elif unit == "Hours":
+        new_hour = timedelta(hours=period)
+        ret_time = starttime + new_hour
+    return ret_time
 
 @app.route("/del-task/<int:id>", methods=['POST'])
 def del_task(id):
@@ -60,5 +84,5 @@ def del_task(id):
 
     return redirect(url_for('index'))
 
-if __name__ == "__main__":
-    app.run(debug=True, port=8000)
+# if __name__ == "__main__":
+#     app.run(debug=True, port=8000)

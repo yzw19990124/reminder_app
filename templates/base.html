@@ -3,20 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <title>{% block title %} {% endblock %} - Plan Reminder App</title>
-    <!--<link rel="stylesheet" href="static/style.css">--> <!-- Link to CSS file -->
+    <link rel="stylesheet" href="static/style.css">
     <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #fafafa;
+            padding: 20px 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-with-icon img {
+            vertical-align: middle;
+        }
+
+        .header-with-icon h2 {
+            display: inline;
+            margin-left: 10px;
+            color: #333;
+        }
+
         .alert {
             padding: 20px;
-            margin: 5px;
+            margin: 5px 10px;
             color: #970020;
             background-color: #ffd5de;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .content {
+            padding: 20px;
+            background-color: white;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
     </style>
 </head>
 <body>
     <header>
-        <h1>My Plan Reminder</h1>
+        <div class="header-with-icon">
+            <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Site Icon" style="width: 32px; height: 32px; vertical-align: middle;">
+            <h2 style="display: inline; margin-left: 10px;">Task Reminder by Dex</h2>
+        </div>
     </header>
 
     <class id="plan-list">

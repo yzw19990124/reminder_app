@@ -1,5 +1,8 @@
 {%extends "base.html"%}
 {%block content%}
+    <style>
+
+    </style>
     <h2>{% block title %}Creating New A Task{% endblock  %}</h2>
     <form method="post">
         <label for="title">Task Name</label>
@@ -13,7 +16,7 @@
             <option value= "Days">Days</option>
             <option value= "Hours">Hours</option>
         </select>
-        <br>
+        <br><br>
         <button type="submit">Looks Good</button>
     </form>
 {%endblock%}

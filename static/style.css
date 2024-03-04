@@ -1,41 +1,26 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-    margin: 0;
-    padding: 0;
+
+
+button {
+    background-color: #007bff; /* Blue background for the button */
+    color: white; /* White text on the button */
+    border: none; /* Remove button border */
+    padding: 10px 20px; /* Padding inside the button */
+    border-radius: 15px; /* Rounded corners for the button */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition for the button */
 }
 
-header {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 1em 0;
-}
-
-#plan-list {
-    margin: 2em;
-    padding: 1em;
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-#plans {
-    list-style: none;
-    padding: 0;
-}
-
-#plans li {
-    padding: 0.5em;
-    border-bottom: 1px solid #ddd;
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
 }
 
 footer {
     text-align: center;
-    padding: 1em 0;
-    background-color: #007bff;
-    color: white;
-    position: fixed;
+    padding: 20px 10px;
+    background-color: #fafafa;
+    position: relative;
     bottom: 0;
     width: 100%;
+    font-size: 14px;
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
